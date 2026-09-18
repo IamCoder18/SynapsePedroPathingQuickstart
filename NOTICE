@@ -1,0 +1,61 @@
+Synapse Pedro Pathing Quickstart
+Copyright (c) 2026 IamCoder18
+
+This repository is a fork of https://github.com/Pedro-Pathing/Quickstart,
+adapted for Safe Pedro Pathing. The upstream Quickstart is preserved in
+the commit history ahead of this NOTICE. Their original licenses and
+copyrights are listed below for the portions of code that this fork
+reuses or builds on.
+
+================================================================================
+Pedro Pathing
+Copyright (c) 2026 Pedro Pathing
+https://github.com/Pedro-Pathing/PedroPathing
+SPDX-License-Identifier: BSD-3-Clause
+
+The original TeamCode/pedro/ procedures, Constants, and Tuning come from
+the upstream Pedro Pathing Quickstart at
+  https://github.com/Pedro-Pathing/Quickstart
+The TuningOpMode base class, Hooks, Display, DisplayName, ImageRegistrar,
+Inputs, InterruptibleBlock, Procedure, Tuner, TunerRegistrar,
+TunerScanner, TuningSession, Utils, WebServer, and WebSocketServer are
+vendored from
+  https://github.com/Pedro-Pathing/AutoTune
+which is also BSD-3-Clause (Copyright (c) 2026 Pedro Pathing).
+
+================================================================================
+Safe Pedro Pathing
+Copyright (c) 2026 IamCoder18
+https://github.com/IamCoder18/SafePedroPathing
+SPDX-License-Identifier: BSD-3-Clause
+
+The Synapse-aware hardware access patterns, SafeHardwareMap usage in
+TuningOpMode, and the Safe Pedro API surface (com.aaravlabs.safepedropathing.*)
+are adapted from Safe Pedro Pathing.
+
+================================================================================
+Synapse
+Copyright (c) 2026 IamCoder18
+https://github.com/IamCoder18/synapse
+SPDX-License-Identifier: MIT
+
+The SafeOpMode, SafeHardwareMap, FtcOrchestrator, and SafeDevice APIs
+that this quickstart imports directly come from the Synapse library.
+
+================================================================================
+Pedro Pathing AutoTune web frontend
+Copyright (c) 2026 Pedro Pathing
+SPDX-License-Identifier: BSD-3-Clause
+
+The React-based tuner UI bundled in TeamCode/src/main/assets/pedro/ is
+vendored from the AutoTune repository (see Pedro Pathing above).
+
+================================================================================
+FIRST Tech Challenge SDK
+Copyright (c) 2014-2026 FIRST
+SPDX-License-Identifier: BSD-3-Clause (see FtcRobotController/ and
+TeamCode/ for the full FIRST LICENSE and additional third-party
+notices under doc/legal/)
+
+The FtcRobotController module and TeamCode skeleton are inherited from
+the upstream Quickstart, which vendors the public FTC SDK release.

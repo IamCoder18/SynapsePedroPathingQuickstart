@@ -1,8 +1,9 @@
 package org.firstinspires.ftc.teamcode.pedro.procedures;
 
-import com.pedropathing.tuning.autotune.*;
-import com.pedropathing.tuning.autotune.Display.FourWheelBot.Wheel;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import org.firstinspires.ftc.teamcode.pedro.tuning.autotune.*;
+import org.firstinspires.ftc.teamcode.pedro.tuning.autotune.Display.FourWheelBot.Wheel;
+import com.aaravlabs.synapse.ftc.SafeDevice;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 enum Direction {
     @DisplayName("Forward") FORWARD,
@@ -85,12 +86,12 @@ class SpinMotor extends TuningOpMode<Void> {
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     protected Void runTuningOpMode() {
-        DcMotor motor = hardwareMap.dcMotor.get(name);
+        SafeDevice<DcMotorEx> motor = safeMap.device(DcMotorEx.class, name);
         waitForStart();
-        motor.setPower(0.5);
+        motor.run(m -> m.setPower(0.5));
         while (opModeIsActive()) {
         }
-        motor.setPower(0);
+        motor.run(m -> m.setPower(0));
         return null;
     }
 }

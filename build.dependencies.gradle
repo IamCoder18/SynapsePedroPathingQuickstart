@@ -1,6 +1,6 @@
 repositories {
     mavenCentral()
-    maven { url 'https://repo.dairy.foundation/releases/'}
+    maven { url 'https://repo.dairy.foundation/releases/'} // Sloth (used by the vendored AutoTune framework)
     google() // Needed for androidx
 }
 
@@ -16,6 +16,16 @@ dependencies {
     implementation 'org.firstinspires.ftc:Vision:11.2.1'
     implementation 'androidx.appcompat:appcompat:1.2.0'
 
-    implementation 'com.pedropathing:revhub:3.0.0'
-    implementation 'com.pedropathing:tuning:1.0.0'
+    // Safe Pedro Pathing (Synapse-safe fork of Pedro Pathing).
+    // Pulls in :core transitively. Synapse is declared explicitly because
+    // team code imports its SafeOpMode / SafeHardwareMap classes directly.
+    implementation 'com.aaravlabs.safepedropathing:revhub:0.1.4'
+    implementation 'com.aaravlabs:synapse:0.4.0'
+
+    // Vendored AutoTune framework dependencies (see .../pedro/tuning/).
+    implementation 'dev.frozenmilk.sinister:Sloth:0.3.0'
+    implementation 'com.aventrix.jnanoid:jnanoid:2.0.0'
+    implementation('org.nanohttpd:nanohttpd-websocket:2.3.1') {
+        exclude module: 'nanohttpd' // NanoHTTPD core is already shaded into RobotCore
+    }
 }

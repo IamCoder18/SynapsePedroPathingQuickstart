@@ -1,12 +1,12 @@
 package org.firstinspires.ftc.teamcode.pedro.procedures;
 
-import com.pedropathing.math.Pose;
-import com.pedropathing.revhub.localizers.OTOSConfig;
-import com.pedropathing.revhub.localizers.OTOSLocalizer;
-import com.pedropathing.tuning.autotune.Inputs;
-import com.pedropathing.tuning.autotune.Procedure;
-import com.pedropathing.tuning.autotune.TuningOpMode;
-import com.pedropathing.utils.Angle;
+import com.aaravlabs.safepedropathing.math.Pose;
+import com.aaravlabs.safepedropathing.revhub.localizers.OTOSConfig;
+import com.aaravlabs.safepedropathing.revhub.localizers.OTOSLocalizer;
+import org.firstinspires.ftc.teamcode.pedro.tuning.autotune.Inputs;
+import org.firstinspires.ftc.teamcode.pedro.tuning.autotune.Procedure;
+import org.firstinspires.ftc.teamcode.pedro.tuning.autotune.TuningOpMode;
+import com.aaravlabs.safepedropathing.utils.Angle;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
@@ -88,7 +88,7 @@ class OTOSLinearScalar extends TuningOpMode<Double> {
             c.angularScalar.set(1.0);
             c.offset.set(Pose.zero());
         });
-        OTOSLocalizer localizer = new OTOSLocalizer(hardwareMap, config);
+        OTOSLocalizer localizer = new OTOSLocalizer(safeMap, config);
         localizer.setPose(Pose.zero());
         localizer.update();
 
@@ -134,7 +134,7 @@ class OTOSAngularScalar extends TuningOpMode<Double> {
             c.angularScalar.set(1.0);
             c.offset.set(Pose.zero());
         });
-        OTOSLocalizer localizer = new OTOSLocalizer(hardwareMap, config);
+        OTOSLocalizer localizer = new OTOSLocalizer(safeMap, config);
         localizer.setPose(Pose.zero());
         localizer.update();
 
@@ -186,7 +186,7 @@ class OTOSOffsets extends TuningOpMode<List<Double>> {
             c.angularScalar.set(angularScalar);
             c.offset.set(Pose.zero());
         });
-        OTOSLocalizer localizer = new OTOSLocalizer(hardwareMap, config);
+        OTOSLocalizer localizer = new OTOSLocalizer(safeMap, config);
         localizer.setPose(Pose.zero());
         localizer.update();
 

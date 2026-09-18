@@ -1,3 +1,31 @@
+# Synapse Pedro Pathing Quickstart
+
+A quickstart project for [Safe Pedro Pathing](https://github.com/IamCoder18/SafePedroPathing) — the Synapse-safe fork of [Pedro Pathing 3.0.0](https://github.com/Pedro-Pathing/PedroPathing). It is a copy of the official [Pedro Pathing Quickstart](https://github.com/Pedro-Pathing/Quickstart) with the `org.firstinspires.ftc.teamcode.pedro` package adapted to the Safe Pedro API: every localizer and drivetrain is constructed from Synapse's `SafeHardwareMap`, so all device access runs on Synapse's dedicated hardware thread.
+
+Inside `TeamCode/src/main/java/org/firstinspires/ftc/teamcode/pedro` you will find:
+
+- `Constants.java` — where you paste your tuned constants and create your `Follower` (takes a `SafeHardwareMap`).
+- `Tuning.java` — where you register tuners with `@Tuner` methods.
+- `procedures/` — the AutoTune procedures (Mecanum, Pinpoint, OTOS, OctoQuad, Two Wheel, Three Wheel, Three Wheel + IMU, Foresight, and Tests), adapted for Safe Pedro.
+- `tuning/autotune/` — the vendored AutoTune framework (from [Pedro-Pathing/AutoTune](https://github.com/Pedro-Pathing/AutoTune)) with a Synapse-aware `TuningOpMode` that provides each tuning OpMode with a `SafeHardwareMap`.
+
+The tuning docs at [pedropathing.com](https://pedropathing.com/) apply unchanged, except that everywhere the docs show a `HardwareMap`, you use a `SafeHardwareMap` instead.
+
+## Installation
+
+Safe Pedro Pathing is published to **Maven Central** as `com.aaravlabs.safepedropathing:revhub`. The dependency is already wired up in [`build.dependencies.gradle`](build.dependencies.gradle); no additional credentials are required:
+
+```gradle
+implementation 'com.aaravlabs.safepedropathing:revhub:0.1.4'
+implementation 'com.aaravlabs:synapse:0.4.0'
+```
+
+`:revhub` pulls in `:core` (the hardware-free follower) transitively. [Synapse](https://github.com/IamCoder18/synapse) is declared explicitly because team code imports its `SafeOpMode` / `SafeHardwareMap` classes directly. The AutoTune framework is vendored into this repository under `TeamCode/src/main/java/org/firstinspires/ftc/teamcode/pedro/tuning/`, with its web frontend in `TeamCode/src/main/assets/pedro/`.
+
+While tuning, open AutoTune in a browser while connected to the Robot Controller at `http://192.168.43.1:10158`.
+
+## FTC SDK
+
 ## NOTICE
 
 This repository contains the public FTC SDK for the DECODE (2025-2026) competition season.

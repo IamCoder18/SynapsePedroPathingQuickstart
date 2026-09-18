@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.pedro;
 
-import com.pedropathing.follower.Follower;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.aaravlabs.safepedropathing.follower.Follower;
+import com.aaravlabs.synapse.ftc.SafeHardwareMap;
 
 public class Constants {
-    public static Follower create(HardwareMap h) {
-        // return new Follower(Drivetrain, Localizer, Foresight);
+    public static Follower create(SafeHardwareMap safeMap) {
+        // return new Follower(Localizer, Drivetrain, Foresight);
         return null;
     }
 }

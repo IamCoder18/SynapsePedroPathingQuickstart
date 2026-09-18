@@ -1,19 +1,19 @@
 package org.firstinspires.ftc.teamcode.pedro.procedures;
 
-import com.pedropathing.math.Pose;
-import com.pedropathing.revhub.localizers.Encoder;
-import com.pedropathing.revhub.localizers.RevHubIMU;
-import com.pedropathing.revhub.localizers.ThreeWheelIMUConfig;
-import com.pedropathing.revhub.localizers.ThreeWheelIMULocalizer;
-import com.pedropathing.tuning.autotune.Inputs;
-import com.pedropathing.tuning.autotune.Procedure;
-import com.pedropathing.tuning.autotune.TuningOpMode;
+import com.aaravlabs.safepedropathing.math.Pose;
+import com.aaravlabs.safepedropathing.revhub.localizers.Encoder;
+import com.aaravlabs.safepedropathing.revhub.localizers.RevHubIMU;
+import com.aaravlabs.safepedropathing.revhub.localizers.ThreeWheelIMUConfig;
+import com.aaravlabs.safepedropathing.revhub.localizers.ThreeWheelIMULocalizer;
+import org.firstinspires.ftc.teamcode.pedro.tuning.autotune.Inputs;
+import org.firstinspires.ftc.teamcode.pedro.tuning.autotune.Procedure;
+import org.firstinspires.ftc.teamcode.pedro.tuning.autotune.TuningOpMode;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.aaravlabs.synapse.ftc.SafeHardwareMap;
 
 import java.util.List;
 
@@ -184,16 +184,17 @@ public class ThreeWheelIMUTuner extends Procedure {
         });
     }
 
-    static ThreeWheelIMULocalizer localizer(HardwareMap map, ThreeWheelIMUConfig config) {
-        for (LynxModule hub : map.getAll(LynxModule.class)) {
+    static ThreeWheelIMULocalizer localizer(SafeHardwareMap map, ThreeWheelIMUConfig config) {
+        for (LynxModule hub : map.raw().getAll(LynxModule.class)) {
             hub.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
         }
         for (String name : new String[]{"lf", "lr", "rf", "rr"}) {
-            DcMotorEx motor = map.get(DcMotorEx.class, name);
-            motor.setPower(0);
-            motor.setDirection(name.equals("lf") || name.equals("lr")
-                    ? DcMotorSimple.Direction.REVERSE : DcMotorSimple.Direction.FORWARD);
-            motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            map.device(DcMotorEx.class, name).run(motor -> {
+                motor.setPower(0);
+                motor.setDirection(name.equals("lf") || name.equals("lr")
+                        ? DcMotorSimple.Direction.REVERSE : DcMotorSimple.Direction.FORWARD);
+                motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            });
         }
         return new ThreeWheelIMULocalizer(map, config);
     }
@@ -216,7 +217,7 @@ class ThreeWheelIMUResolution extends TuningOpMode<List<Double>> {
     protected List<Double> runTuningOpMode() {
         ThreeWheelIMUConfig config = ThreeWheelIMUTuner.config(!pod.equals("Right"), 1.0, 1.0,
                 Encoder.FORWARD, Encoder.FORWARD, Encoder.FORWARD);
-        ThreeWheelIMULocalizer localizer = ThreeWheelIMUTuner.localizer(hardwareMap, config);
+        ThreeWheelIMULocalizer localizer = ThreeWheelIMUTuner.localizer(safeMap, config);
         localizer.setPose(new Pose(0, 0));
         Pose position = null;
 
@@ -266,7 +267,7 @@ class ThreeWheelIMUOffsets extends TuningOpMode<List<Double>> {
         boolean previousUseIMU = ThreeWheelIMULocalizer.useIMU;
         ThreeWheelIMULocalizer.useIMU = false;
         try {
-            ThreeWheelIMULocalizer localizer = ThreeWheelIMUTuner.localizer(hardwareMap, config);
+            ThreeWheelIMULocalizer localizer = ThreeWheelIMUTuner.localizer(safeMap, config);
             localizer.setPose(new Pose(0, 0));
             localizer.update();
             Pose position = null;
@@ -303,7 +304,7 @@ class ThreeWheelIMUTurn extends TuningOpMode<Double> {
         boolean previousUseIMU = ThreeWheelIMULocalizer.useIMU;
         ThreeWheelIMULocalizer.useIMU = false;
         try {
-            ThreeWheelIMULocalizer localizer = ThreeWheelIMUTuner.localizer(hardwareMap, config);
+            ThreeWheelIMULocalizer localizer = ThreeWheelIMUTuner.localizer(safeMap, config);
             localizer.setPose(new Pose(0, 0));
             localizer.update();
             double startHeading = localizer.getTotalHeading();

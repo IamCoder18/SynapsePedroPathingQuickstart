@@ -1,17 +1,17 @@
 package org.firstinspires.ftc.teamcode.pedro.procedures;
 
-import com.pedropathing.math.Pose;
-import com.pedropathing.revhub.localizers.Encoder;
-import com.pedropathing.revhub.localizers.ThreeWheelConfig;
-import com.pedropathing.revhub.localizers.ThreeWheelLocalizer;
-import com.pedropathing.tuning.autotune.Inputs;
-import com.pedropathing.tuning.autotune.Procedure;
-import com.pedropathing.tuning.autotune.TuningOpMode;
+import com.aaravlabs.safepedropathing.math.Pose;
+import com.aaravlabs.safepedropathing.revhub.localizers.Encoder;
+import com.aaravlabs.safepedropathing.revhub.localizers.ThreeWheelConfig;
+import com.aaravlabs.safepedropathing.revhub.localizers.ThreeWheelLocalizer;
+import org.firstinspires.ftc.teamcode.pedro.tuning.autotune.Inputs;
+import org.firstinspires.ftc.teamcode.pedro.tuning.autotune.Procedure;
+import org.firstinspires.ftc.teamcode.pedro.tuning.autotune.TuningOpMode;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.aaravlabs.synapse.ftc.SafeHardwareMap;
 
 import java.util.List;
 
@@ -158,16 +158,17 @@ public class ThreeWheelTuner extends Procedure {
         });
     }
 
-    static ThreeWheelLocalizer localizer(HardwareMap map, ThreeWheelConfig config) {
-        for (LynxModule hub : map.getAll(LynxModule.class)) {
+    static ThreeWheelLocalizer localizer(SafeHardwareMap map, ThreeWheelConfig config) {
+        for (LynxModule hub : map.raw().getAll(LynxModule.class)) {
             hub.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
         }
         for (String name : new String[]{"lf", "lr", "rf", "rr"}) {
-            DcMotorEx motor = map.get(DcMotorEx.class, name);
-            motor.setPower(0);
-            motor.setDirection(name.equals("lf") || name.equals("lr")
-                    ? DcMotorSimple.Direction.REVERSE : DcMotorSimple.Direction.FORWARD);
-            motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            map.device(DcMotorEx.class, name).run(motor -> {
+                motor.setPower(0);
+                motor.setDirection(name.equals("lf") || name.equals("lr")
+                        ? DcMotorSimple.Direction.REVERSE : DcMotorSimple.Direction.FORWARD);
+                motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            });
         }
         return new ThreeWheelLocalizer(map, config);
     }
@@ -190,7 +191,7 @@ class ThreeWheelResolution extends TuningOpMode<List<Double>> {
     protected List<Double> runTuningOpMode() {
         ThreeWheelConfig config = ThreeWheelTuner.config(!pod.equals("Right"), 1.0, 1.0,
                 Encoder.FORWARD, Encoder.FORWARD, Encoder.FORWARD);
-        ThreeWheelLocalizer localizer = ThreeWheelTuner.localizer(hardwareMap, config);
+        ThreeWheelLocalizer localizer = ThreeWheelTuner.localizer(safeMap, config);
         localizer.setPose(new Pose(0, 0));
         Pose position = null;
 
@@ -237,7 +238,7 @@ class ThreeWheelOffsets extends TuningOpMode<List<Double>> {
     protected List<Double> runTuningOpMode() {
         ThreeWheelConfig config = ThreeWheelTuner.config(left, forward, strafe,
                 leftDirection, rightDirection, strafeDirection);
-        ThreeWheelLocalizer localizer = ThreeWheelTuner.localizer(hardwareMap, config);
+        ThreeWheelLocalizer localizer = ThreeWheelTuner.localizer(safeMap, config);
         localizer.setPose(new Pose(0, 0));
         localizer.update();
         Pose position = null;
@@ -268,7 +269,7 @@ class ThreeWheelTurn extends TuningOpMode<Double> {
 
     @Override
     protected Double runTuningOpMode() {
-        ThreeWheelLocalizer localizer = ThreeWheelTuner.localizer(hardwareMap, config);
+        ThreeWheelLocalizer localizer = ThreeWheelTuner.localizer(safeMap, config);
         localizer.setPose(new Pose(0, 0));
         localizer.update();
         double startHeading = localizer.getTotalHeading();

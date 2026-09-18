@@ -1,13 +1,13 @@
 package org.firstinspires.ftc.teamcode.pedro.procedures;
 
-import com.pedropathing.math.Pose;
-import com.pedropathing.revhub.localizers.Encoder;
-import com.pedropathing.revhub.localizers.RevHubIMU;
-import com.pedropathing.revhub.localizers.TwoWheelConfig;
-import com.pedropathing.revhub.localizers.TwoWheelLocalizer;
-import com.pedropathing.tuning.autotune.Inputs;
-import com.pedropathing.tuning.autotune.Procedure;
-import com.pedropathing.tuning.autotune.TuningOpMode;
+import com.aaravlabs.safepedropathing.math.Pose;
+import com.aaravlabs.safepedropathing.revhub.localizers.Encoder;
+import com.aaravlabs.safepedropathing.revhub.localizers.RevHubIMU;
+import com.aaravlabs.safepedropathing.revhub.localizers.TwoWheelConfig;
+import com.aaravlabs.safepedropathing.revhub.localizers.TwoWheelLocalizer;
+import org.firstinspires.ftc.teamcode.pedro.tuning.autotune.Inputs;
+import org.firstinspires.ftc.teamcode.pedro.tuning.autotune.Procedure;
+import org.firstinspires.ftc.teamcode.pedro.tuning.autotune.TuningOpMode;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 
 import java.util.List;
@@ -188,7 +188,7 @@ class TwoWheelForwardResolution extends TuningOpMode<Double> {
                 0.0
         );
 
-        TwoWheelLocalizer localizer = new TwoWheelLocalizer(hardwareMap, config);
+        TwoWheelLocalizer localizer = new TwoWheelLocalizer(safeMap, config);
         localizer.setPose(new Pose(0, 0));
         Pose position = null;
 
@@ -235,7 +235,7 @@ class TwoWheelStrafeResolution extends TuningOpMode<Double> {
                 0.0
         );
 
-        TwoWheelLocalizer localizer = new TwoWheelLocalizer(hardwareMap, config);
+        TwoWheelLocalizer localizer = new TwoWheelLocalizer(safeMap, config);
         localizer.setPose(new Pose(0, 0));
         Pose position = null;
 
@@ -282,7 +282,7 @@ class TwoWheelForwardDirection extends TuningOpMode<Boolean> {
                 0.0
         );
 
-        TwoWheelLocalizer localizer = new TwoWheelLocalizer(hardwareMap, config);
+        TwoWheelLocalizer localizer = new TwoWheelLocalizer(safeMap, config);
         localizer.setPose(new Pose(0, 0));
 
         waitForStart();
@@ -324,7 +324,7 @@ class TwoWheelStrafeDirection extends TuningOpMode<Boolean> {
                 0.0
         );
 
-        TwoWheelLocalizer localizer = new TwoWheelLocalizer(hardwareMap, config);
+        TwoWheelLocalizer localizer = new TwoWheelLocalizer(safeMap, config);
         localizer.setPose(new Pose(0, 0));
 
         waitForStart();
@@ -377,7 +377,7 @@ class TwoWheelOffsets extends TuningOpMode<List<Double>> {
                 0.0
         );
 
-        TwoWheelLocalizer localizer = new TwoWheelLocalizer(hardwareMap, config);
+        TwoWheelLocalizer localizer = new TwoWheelLocalizer(safeMap, config);
         localizer.setPose(Pose.zero());
         localizer.update();
 

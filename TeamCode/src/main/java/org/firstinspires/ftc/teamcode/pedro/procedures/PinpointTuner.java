@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.pedro.procedures;
 
-import com.pedropathing.math.Pose;
-import com.pedropathing.revhub.localizers.PinpointConfig;
-import com.pedropathing.revhub.localizers.PinpointLocalizer;
-import com.pedropathing.tuning.autotune.Inputs;
-import com.pedropathing.tuning.autotune.Procedure;
-import com.pedropathing.tuning.autotune.TuningOpMode;
+import com.aaravlabs.safepedropathing.math.Pose;
+import com.aaravlabs.safepedropathing.revhub.localizers.PinpointConfig;
+import com.aaravlabs.safepedropathing.revhub.localizers.PinpointLocalizer;
+import org.firstinspires.ftc.teamcode.pedro.tuning.autotune.Inputs;
+import org.firstinspires.ftc.teamcode.pedro.tuning.autotune.Procedure;
+import org.firstinspires.ftc.teamcode.pedro.tuning.autotune.TuningOpMode;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
@@ -93,7 +93,7 @@ class PinpointCustomPodScalar extends TuningOpMode<Double> {
             c.xPodOffset.set(0.0);
             c.yPodOffset.set(0.0);
         });
-        PinpointLocalizer localizer = new PinpointLocalizer(hardwareMap, config);
+        PinpointLocalizer localizer = new PinpointLocalizer(safeMap, config);
         localizer.setPose(new Pose(0, 0));
         Thread.sleep(1000);
         waitForStart();
@@ -136,7 +136,7 @@ class PinpointForwardDirection extends TuningOpMode<Boolean> {
                 c.podType.set(podType == PinpointTuner.PodType.SWING_ARM ? GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD : GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
             }
         });
-        PinpointLocalizer localizer = new PinpointLocalizer(hardwareMap, config);
+        PinpointLocalizer localizer = new PinpointLocalizer(safeMap, config);
         localizer.setPose(new Pose(0, 0));
         Thread.sleep(1000);
         waitForStart();
@@ -181,7 +181,7 @@ class PinpointStrafeDirection extends TuningOpMode<Boolean> {
                 c.podType.set(podType == PinpointTuner.PodType.SWING_ARM ? GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD : GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
             }
         });
-        PinpointLocalizer localizer = new PinpointLocalizer(hardwareMap, config);
+        PinpointLocalizer localizer = new PinpointLocalizer(safeMap, config);
         localizer.setPose(new Pose(0, 0));
         Thread.sleep(1000);
         waitForStart();
@@ -234,7 +234,7 @@ class PinpointOffsets extends TuningOpMode<List<Double>> {
             c.globalDistanceUnit.set(DistanceUnit.INCH);
             c.offsetUnits.set(DistanceUnit.INCH);
         });
-        PinpointLocalizer localizer = new PinpointLocalizer(hardwareMap, config);
+        PinpointLocalizer localizer = new PinpointLocalizer(safeMap, config);
         if (customPodScalar.isPresent()) {
             localizer.reset();
         }

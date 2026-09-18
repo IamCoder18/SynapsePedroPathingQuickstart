@@ -1,12 +1,12 @@
 package org.firstinspires.ftc.teamcode.pedro.procedures;
 
-import com.pedropathing.math.Pose;
-import com.pedropathing.revhub.localizers.OctoQuadConfig;
-import com.pedropathing.revhub.localizers.OctoQuadLocalizer;
-import com.pedropathing.tuning.autotune.Inputs;
-import com.pedropathing.tuning.autotune.Procedure;
-import com.pedropathing.tuning.autotune.TuningOpMode;
-import com.pedropathing.utils.Angle;
+import com.aaravlabs.safepedropathing.math.Pose;
+import com.aaravlabs.safepedropathing.revhub.localizers.OctoQuadConfig;
+import com.aaravlabs.safepedropathing.revhub.localizers.OctoQuadLocalizer;
+import org.firstinspires.ftc.teamcode.pedro.tuning.autotune.Inputs;
+import org.firstinspires.ftc.teamcode.pedro.tuning.autotune.Procedure;
+import org.firstinspires.ftc.teamcode.pedro.tuning.autotune.TuningOpMode;
+import com.aaravlabs.safepedropathing.utils.Angle;
 import com.qualcomm.hardware.digitalchickenlabs.OctoQuad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -120,7 +120,7 @@ class OctoQuadHeadingScalar extends TuningOpMode<Double> {
             c.yPodOffset.set(0.0);
         });
 
-        OctoQuadLocalizer localizer = new OctoQuadLocalizer(hardwareMap, config);
+        OctoQuadLocalizer localizer = new OctoQuadLocalizer(safeMap, config);
         localizer.setPose(new Pose(0, 0));
         localizer.update();
         waitForStart();
@@ -165,23 +165,31 @@ class OctoQuadCustomPodScalar extends TuningOpMode<Double> {
             c.xPodOffset.set(0.0);
             c.yPodOffset.set(0.0);
         });
-        OctoQuadLocalizer localizer = new OctoQuadLocalizer(hardwareMap, config);
+        OctoQuadLocalizer localizer = new OctoQuadLocalizer(safeMap, config);
         localizer.setPose(new Pose(0, 0));
         waitForStart();
 
-        double startTicks = localizer.octoQuad.readAllEncoderData().positions[xPodPort];
+        double startTicks = readEncoderTicks(localizer, xPodPort);
         double lastLastTicksPerInch = 0;
         double lastTicksPerInch = 0;
 
         while (!isStopRequested()) {
             localizer.update();
 
-            double pos = localizer.octoQuad.readAllEncoderData().positions[xPodPort];
+            double pos = readEncoderTicks(localizer, xPodPort);
             lastLastTicksPerInch = lastTicksPerInch;
             lastTicksPerInch = Math.abs(pos - startTicks) / distance;
         }
 
         return lastLastTicksPerInch;
+    }
+
+    private static double readEncoderTicks(OctoQuadLocalizer localizer, int port) {
+        try {
+            return localizer.octoQuad.call(o -> o.readAllEncoderData()).positions[port];
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 
@@ -223,7 +231,7 @@ class OctoQuadForwardDirection extends TuningOpMode<Boolean> {
                 c.ticksPerUnit.set(podType == OctoQuadTuner.PodType.SWING_ARM ? OctoQuadTuner.SWING_ARM : OctoQuadTuner.FOUR_BAR);
             }
         });
-        OctoQuadLocalizer localizer = new OctoQuadLocalizer(hardwareMap, config);
+        OctoQuadLocalizer localizer = new OctoQuadLocalizer(safeMap, config);
         localizer.setPose(new Pose(0, 0));
         waitForStart();
         while (!isStopRequested()) {
@@ -273,7 +281,7 @@ class OctoQuadStrafeDirection extends TuningOpMode<Boolean> {
                 c.ticksPerUnit.set(podType == OctoQuadTuner.PodType.SWING_ARM ? OctoQuadTuner.SWING_ARM : OctoQuadTuner.FOUR_BAR);
             }
         });
-        OctoQuadLocalizer localizer = new OctoQuadLocalizer(hardwareMap, config);
+        OctoQuadLocalizer localizer = new OctoQuadLocalizer(safeMap, config);
         localizer.setPose(new Pose(0, 0));
         waitForStart();
         while (!isStopRequested()) {
@@ -328,7 +336,7 @@ class OctoQuadOffsets extends TuningOpMode<List<Double>> {
             c.yPodOffset.set(0.0);
             c.headingScalar.set(headingScalar);
         });
-        OctoQuadLocalizer localizer = new OctoQuadLocalizer(hardwareMap, config);
+        OctoQuadLocalizer localizer = new OctoQuadLocalizer(safeMap, config);
         localizer.setPose(new Pose(0, 0));
         localizer.update();
 
